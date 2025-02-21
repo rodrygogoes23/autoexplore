@@ -1,6 +1,7 @@
 # autoexplore
 
 This script has been leaked by rodrygo goes(proud madrid fan), So what this script does is automatically collect coins for you around 300k per day via 1 single ID
+Star this repo so i can see if you want more scripts or not
 
 Open my.telegram.org then login with any account and in app title and short name type anything and get you API ID and API Hash (save it you will need in later stuffs also)
 Download ACode from playstore or Notepad++ if you are on PC
