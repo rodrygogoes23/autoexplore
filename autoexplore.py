@@ -2,11 +2,11 @@ import asyncio
 from telethon import TelegramClient, Button
 
 # Replace with your own API credentials from https://my.telegram.org
-api_id = 1331814       # e.g., 1234567
-api_hash = 'b507dd65bfa82f9c2c7b5f2e75eba696' # e.g., '0123456789abcdef0123456789abcdef'
+api_id =        # e.g., 1234567
+api_hash = '' # e.g., '0123456789abcdef0123456789abcdef'
 
 # The target chat ID where everything will happen
-chat_id = -1002289772556
+chat_id = -
 
 client = TelegramClient('session', api_id, api_hash)
 
