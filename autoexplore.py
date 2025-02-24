@@ -1,57 +1,50 @@
 import asyncio
+import random
 from telethon import TelegramClient, Button
 
-# Replace with your own API credentials from https://my.telegram.org
-api_id =        # e.g., 1234567
-api_hash = '' # e.g., '0123456789abcdef0123456789abcdef'
+# Replace with your own API credentials
+api_id = 
+api_hash = ''
 
-# The target chat ID where everything will happen
-chat_id = -
+# The target chat ID
+chat_id = 
 
 client = TelegramClient('session', api_id, api_hash)
 
 async def explore_cycle():
     while True:
         try:
-            # Open a conversation with the target chat
             async with client.conversation(chat_id) as conv:
                 print("Sending /explore command to the chat...")
                 await conv.send_message('/explore')
-                
-                # Wait for the bot's response (adjust timeout as needed)
-                response = await conv.get_response(timeout=10)
-                print("Received response from chat:")
-                print(response.text)
-                
-                # Check if the message has inline buttons
-                if response.buttons:
-                    print("Found inline buttons:")
-                    for row in response.buttons:
-                        for btn in row:
-                            print(" -", btn.text)
-                    
-                    # Search for the button containing "New Zealand" (case insensitive)
-                    chosen_button = None
-                    for row in response.buttons:
-                        for btn in row:
-                            if "new zealand" in btn.text.lower():
-                                chosen_button = btn
-                                break
-                        if chosen_button:
-                            break
-                    
-                    if chosen_button:
-                        print(f"Clicking on button: {chosen_button.text}")
-                        # Use the message object's click() method:
-                        await response.click(text=chosen_button.text)
+
+                # Expect responses from 3 different bots
+                responses = []
+                for i in range(3):
+                    response = await conv.get_response(timeout=10)
+                    responses.append(response)
+
+                # Process each response with a 2-second delay between clicks
+                for idx, response in enumerate(responses, start=1):
+                    print(f"[Response {idx}] {response.text}")
+                    if response.buttons:
+                        # Flatten the buttons
+                        all_buttons = [btn for row in response.buttons for btn in row]
+                        if all_buttons:
+                            chosen_button = random.choice(all_buttons)
+                            print(f"Clicking on random button: {chosen_button.text}")
+                            await response.click(text=chosen_button.text)
+
+                            # Wait 2 seconds before clicking the next button
+                            await asyncio.sleep(2)
+                        else:
+                            print("No inline buttons found in this response.")
                     else:
-                        print("No button containing 'New Zealand' was found.")
-                else:
-                    print("No inline buttons found in the response.")
-        
+                        print("No inline buttons found in this response.")
+
         except Exception as e:
             print("An error occurred:", e)
-        
+
         print("Waiting for 310 seconds before the next command...\n")
         await asyncio.sleep(310)
 
